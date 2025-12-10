@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Proses Bisnis SID Lite - Integrasi SID Desa, SIPedet, SIKAB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-soft: #dbeafe;
+            --accent: #0f766e;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #eff6ff, #f9fafb 40%, #f3f4f6);
+            color: var(--text-main);
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1d4ed8, #0f766e);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+        }
+
+        header .title-group h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        header .title-group p {
+            margin: 4px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        header .tag {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            background: rgba(15, 23, 42, 0.25);
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 18px 18px 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header h2 span.icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .card-header .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #f3f4ff;
+            color: #4f46e5;
+        }
+
+        .steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            counter-reset: step;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 10px;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -4px;
+            width: 2px;
+            background: linear-gradient(to bottom, #bfdbfe, rgba(191,219,254,0));
+        }
+
+        .step-index {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            background: white;
+            border: 2px solid #bfdbfe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1d4ed8;
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .step-content {
+            padding: 4px 0;
+        }
+
+        .step-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .step-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .pill {
+            font-size: 0.74rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #dbeafe;
+        }
+
+        .highlight {
+            background: #ecfeff;
+            border: 1px dashed #06b6d4;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            color: #0369a1;
+            margin-top: 10px;
+        }
+
+        /* Flow diagram */
+        .flow-diagram {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            row-gap: 10px;
+            height: 100%;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+        }
+
+        .dot.user { background: #4b5563; }
+        .dot.sid-desa { background: #1d4ed8; }
+        .dot.sid-lite { background: #0f766e; }
+        .dot.sikab { background: #c2410c; }
+
+        .lanes {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1000px) {
+            .lanes {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .lanes {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .lane {
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 10px 10px 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lane-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+        }
+
+        .lane-header span.label {
+            padding: 3px 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: #ffffff;
+        }
+
+        .lane-header small {
+            color: #6b7280;
+            font-size: 0.7rem;
+        }
+
+        .lane-node {
+            background: white;
+            border-radius: 10px;
+            padding: 6px 7px;
+            margin-bottom: 6px;
+            border: 1px solid #e5e7eb;
+            position: relative;
+        }
+
+        .lane-node .label {
+            font-weight: 600;
+            font-size: 0.78rem;
+            margin-bottom: 2px;
+        }
+
+        .lane-node .body {
+            font-size: 0.76rem;
+            color: #4b5563;
+        }
+
+        .lane-node .body strong {
+            color: #111827;
+        }
+
+        .lane-node::after {
+            content: "➜";
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .lane-node:last-child::after {
+            content: "";
+        }
+
+        .lane.user .lane-header { border-left: 3px solid #4b5563; padding-left: 4px; }
+        .lane.sid-desa .lane-header { border-left: 3px solid #1d4ed8; padding-left: 4px; }
+        .lane.sid-lite .lane-header { border-left: 3px solid #0f766e; padding-left: 4px; }
+        .lane.sikab .lane-header { border-left: 3px solid #c2410c; padding-left: 4px; }
+
+        .lane.sid-lite .lane-node {
+            border-color: #a7f3d0;
+            background: #ecfeff;
+        }
+
+        .lane.sikab .lane-node {
+            border-color: #fed7aa;
+            background: #fffbeb;
+        }
+
+        footer {
+            margin-top: 18px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <div class="title-group">
+            <h1>Proses Bisnis SID Lite</h1>
+            <p>Alur integrasi antara SID Desa, SID Lite, SIPedet, dan SIKAB untuk pemutakhiran data sanitasi, RTLH, dan air.</p>
+        </div>
+        <div class="tag">
+            Integrasi: Login SID Desa → Form SID Lite → Data Sipedet → Update Sanitasi/RTLH/Air dari SIKAB
+        </div>
+    </header>
+
+    <main>
+        <!-- Kolom kiri: Narasi langkah demi langkah -->
+        <section class="card">
+            <div class="card-header">
+                <h2>
+                    <span class="icon">①</span>
+                    Langkah Proses Bisnis
+                </h2>
+                <span class="badge">View: Narasi / Detail</span>
+            </div>
+
+            <ol class="steps">
+                <li class="step">
+                    <div class="step-index">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Login ke Website SID Desa</div>
+                        <div class="step-meta">Aktor: Operator Desa / Admin SID Desa</div>
+                        <div class="step-desc">
+                            Operator membuka <strong>portal SID Desa</strong> kemudian melakukan proses
+                            <strong>login</strong> menggunakan akun yang sudah terdaftar (username/password atau SSO sesuai kebijakan).
+                        </div>
+                    </div>
+                </li>
+
+                <li class="step">
+                    <div class="step-index">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Mengakses Menu "SID Lite"</div>
+                        <div class="step-meta">Sistem: SID Desa</div>
+                        <div class="step-desc">
+                            Setelah berhasil login, operator masuk ke dashboard SID Desa dan memilih
+                            <strong>menu/tautan "SID Lite"</strong>. SID Desa meneruskan konteks desa dan pengguna
+                            (misal: ID desa, ID user) ke modul SID Lite.
+                        </div>
+                        <div class="pill-group">
+                            <span class="pill">Menu SID Lite</span>
+                            <span class="pill">Single Sign-On (opsional)</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="step">
+                    <div class="step-index">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Masuk ke Form Utama SID Lite</div>
+                        <div class="step-meta">Sistem: SID Lite</div>
+                        <div class="step-desc">
+                            SID Lite menerima request dari SID Desa dan menampilkan <strong>form utama SID Lite</strong>
+                            untuk pengelolaan data rumah tangga/rumah tinggal, termasuk tab atau bagian:
+                            <em>Data Dasar, Sanitasi, RTLH, Air, dsb.</em>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="step">
+                    <div class="step-index">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Ambil Data Sanding dari SIPedet</div>
+                        <div class="step-meta">Integrasi: SID Lite ↔ SIPedet</div>
+                        <div class="step-desc">
+                            Pada saat form dibuka, SID Lite <strong>mengambil seluruh data relevan dari SIPedet</strong>
+                            (misalnya data penduduk, rumah, dan atribut dasar lainnya) sebagai
+                            <strong>data sanding</strong> untuk proses verifikasi dan validasi.
+                        </div>
+                        <div class="highlight">
+                            SID Lite tidak mengisi data dari nol, tetapi memanfaatkan <strong>data SIPedet</strong> sebagai baseline
+                            sehingga operator hanya perlu memutakhirkan atau memperbaiki data yang belum sesuai.
+                        </div>
+                    </div>
+                </li>
+
+                <li class="step">
+                    <div class="step-index">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Update Data Sanitasi, RTLH, dan Air dari SIKAB</div>
+                        <div class="step-meta">Integrasi: SID Lite ↔ SIKAB</div>
+                        <div class="step-desc">
+                            Setelah data sanding dari SIPedet tersedia, SID Lite melakukan proses
+                            <strong>pengambilan dan pemutakhiran data</strong> dari <strong>SIKAB</strong> untuk
+                            komponen:
+                            <br>
+                            • <strong>Sanitasi</strong><br>
+                            • <strong>RTLH (Rumah Tidak Layak Huni)</strong><br>
+                            • <strong>Akses Air / Air Minum</strong>
+                            <br><br>
+                            Nilai-nilai terbaru dari SIKAB digunakan untuk <strong>mengupdate field terkait</strong>
+                            di form SID Lite sehingga kondisi sarana dan prasarana rumah tinggal mengikuti
+                            data mutakhir yang tercatat di SIKAB.
+                        </div>
+                        <div class="pill-group">
+                            <span class="pill">Sinkron Sanitasi</span>
+                            <span class="pill">Sinkron RTLH</span>
+                            <span class="pill">Sinkron Data Air</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="step">
+                    <div class="step-index">6</div>
+                    <div class="step-content">
+                        <div class="step-title">Verifikasi & Simpan oleh Operator</div>
+                        <div class="step-meta">Aktor: Operator Desa • Sistem: SID Lite</div>
+                        <div class="step-desc">
+                            Operator meninjau data yang sudah digabung:
+                            <strong>data dasar dari SIPedet</strong> dan <strong>data sanitasi/RTLH/air dari SIKAB</strong>.
+                            Jika sudah sesuai, operator melakukan <strong>verifikasi</strong> dan menekan tombol
+                            <strong>Simpan / Update</strong>. SID Lite menyimpan hasil penggabungan dan penyesuaian ini
+                            ke dalam basis data SID Lite (dan dapat digunakan kembali sebagai referensi berikutnya).
+                        </div>
+                    </div>
+                </li>
+            </ol>
+
+            <div class="highlight">
+                Ringkasnya: <strong>Login di SID Desa → pilih SID Lite → SID Lite muat data sanding dari SIPedet →
+                update data Sanitasi/RTLH/Air dari SIKAB → operator verifikasi dan simpan.</strong>
+            </div>
+        </section>
+
+        <!-- Kolom kanan: Diagram alur proses -->
+        <section class="card">
+            <div class="card-header">
+                <h2>
+                    <span class="icon">②</span>
+                    Diagram Alur Integrasi
+                </h2>
+                <span class="badge">View: Swimlane / Sistem</span>
+            </div>
+
+            <div class="flow-diagram">
+                <div class="legend">
+                    <span><span class="dot user"></span> Pengguna / Operator Desa</span>
+                    <span><span class="dot sid-desa"></span> SID Desa</span>
+                    <span><span class="dot sid-lite"></span> SID Lite</span>
+                    <span><span class="dot sikab"></span> SIKAB / SIPedet</span>
+                </div>
+
+                <div class="lanes">
+                    <!-- Lane Pengguna -->
+                    <div class="lane user">
+                        <div class="lane-header">
+                            <span class="label">Pengguna / Operator Desa</span>
+                            <small>Aktor</small>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">1. Akses Website SID Desa</div>
+                            <div class="body">
+                                Buka URL SID Desa dari browser.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">2. Login</div>
+                            <div class="body">
+                                Input kredensial, berhasil masuk dashboard.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">3. Klik Menu "SID Lite"</div>
+                            <div class="body">
+                                Mengarahkan alur ke modul SID Lite (redirect/SSO).
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">6. Review & Simpan</div>
+                            <div class="body">
+                                Verifikasi data yang sudah digabung, lalu simpan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lane SID Desa -->
+                    <div class="lane sid-desa">
+                        <div class="lane-header">
+                            <span class="label">SID Desa</span>
+                            <small>Portal Utama</small>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Autentikasi User</div>
+                            <div class="body">
+                                Validasi login dan buat sesi pengguna.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Redirect ke SID Lite</div>
+                            <div class="body">
+                                Kirim <strong>ID desa, ID user</strong> ke SID Lite sebagai konteks.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lane SID Lite -->
+                    <div class="lane sid-lite">
+                        <div class="lane-header">
+                            <span class="label">SID Lite</span>
+                            <small>Modul Form</small>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Terima Konteks dari SID Desa</div>
+                            <div class="body">
+                                Identifikasi desa dan pengguna untuk sesi SID Lite.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Load Form Rumah Tinggal</div>
+                            <div class="body">
+                                Tampilkan form (Sanitasi, RTLH, Air, dsb.).
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Ambil Data Sipedet</div>
+                            <div class="body">
+                                <strong>Pull data SIPedet</strong> sebagai data sanding dasar.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Update dari SIKAB</div>
+                            <div class="body">
+                                <strong>Update field Sanitasi, RTLH, dan Air</strong> berdasarkan data SIKAB terkini.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">Simpan Hasil Akhir</div>
+                            <div class="body">
+                                Simpan gabungan data ke basis data SID Lite.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lane SIKAB / SIPedet -->
+                    <div class="lane sikab">
+                        <div class="lane-header">
+                            <span class="label">SIKAB & SIPedet</span>
+                            <small>Sumber Data</small>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">SIPedet</div>
+                            <div class="body">
+                                Menyediakan <strong>data dasar</strong> (penduduk, rumah) untuk SID Lite.
+                            </div>
+                        </div>
+                        <div class="lane-node">
+                            <div class="label">SIKAB</div>
+                            <div class="body">
+                                Menyediakan data <strong>Sanitasi, RTLH, Air</strong> terkini untuk pemutakhiran.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Draft proses bisnis SID Lite – dapat disesuaikan lagi dengan kebutuhan teknis & regulasi masing-masing daerah.
+    </footer>
+</div>
+</body>
+</html>
