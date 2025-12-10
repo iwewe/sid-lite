@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Mockup Validasi & Verifikasi Sarpras Rumah Tinggal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --primary-dark: #1d4ed8;
+            --bg: #f3f4f6;
+            --border: #e5e7eb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            margin: 0 0 4px 0;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .header-main {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .header-main {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        }
+
+        .search-box {
+            flex: 2;
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+        }
+
+        .search-box-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-form select,
+        .search-form input {
+            padding: 6px 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+
+        .search-form input {
+            flex: 1;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .search-result {
+            flex: 3;
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px dashed var(--border);
+            background: white;
+        }
+
+        .search-result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .search-result-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            align-items: center;
+        }
+
+        .badge-status {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .search-result-name {
+            font-weight: 600;
+        }
+
+        .search-result-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .tabs-container {
+            margin-top: 12px;
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: 4px;
+            background: transparent;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-button {
+            border: none;
+            background: transparent;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-button span.label {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .tab-button.active {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+
+        .tabs-body {
+            background: white;
+            border-radius: 0 0 12px 12px;
+            padding: 16px 20px 20px;
+            border: 1px solid var(--border);
+            border-top: none;
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .section-header h2 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .section-header small {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 7px 9px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .form-footer-left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .chip-info {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #fef3c7;
+            color: #92400e;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chip-info::before {
+            content: "ℹ";
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <div>
+            <h1>Validasi & Verifikasi Sarana Prasarana Rumah Tinggal</h1>
+            <p>Mockup multi-tab: Sipedet, Sanitasi, RTLH, Air (dummy form)</p>
+        </div>
+
+        <div class="header-main">
+            <!-- PENCARIAN -->
+            <div class="search-box">
+                <div class="search-box-title">Pencarian Subjek</div>
+                <form class="search-form" id="searchForm">
+                    <select id="searchBy">
+                        <option value="Nama">Nama</option>
+                        <option value="NIK">NIK</option>
+                        <option value="Dusun">Dusun</option>
+                        <option value="RT">RT</option>
+                        <option value="RW">RW</option>
+                    </select>
+                    <input id="searchKeyword" type="text" placeholder="Masukkan kata kunci…" required>
+                    <button type="submit" class="btn btn-primary">
+                        🔍 Cari
+                    </button>
+                    <button type="button" class="btn btn-ghost" id="resetSearch">
+                        Reset
+                    </button>
+                </form>
+            </div>
+
+            <!-- HASIL PENCARIAN DI HEADER -->
+            <div class="search-result" id="searchResultBox">
+                <div class="search-result-label">Subjek Terpilih</div>
+                <div class="search-result-main" id="searchResultEmpty">
+                    <span class="badge-status">Belum ada hasil</span>
+                    <span class="search-result-meta">Lakukan pencarian berdasarkan Nama / NIK / Dusun / RT / RW.</span>
+                </div>
+                <div class="search-result-main" id="searchResultData" style="display:none;">
+                    <span class="badge-status" id="badgeStatus">Draft</span>
+                    <span class="search-result-name" id="resultName">-</span>
+                    <span class="search-result-meta" id="resultMeta">-</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="tabs-container">
+        <!-- TAB HEADER -->
+        <div class="tabs-header">
+            <button class="tab-button active" data-tab="tab-sipedet">
+                <span class="label">Sipedet</span>
+            </button>
+            <button class="tab-button" data-tab="tab-sanitasi">
+                <span class="label">Sanitasi</span>
+            </button>
+            <button class="tab-button" data-tab="tab-rtlh">
+                <span class="label">RTLH</span>
+            </button>
+            <button class="tab-button" data-tab="tab-air">
+                <span class="label">Air</span>
+            </button>
+        </div>
+
+        <!-- TAB BODY -->
+        <div class="tabs-body">
+            <!-- SIPEDET -->
+            <section id="tab-sipedet" class="tab-content active">
+                <div class="section-header">
+                    <h2>Sipedet – Validasi Data Fisik Rumah</h2>
+                    <small>Dummy form terkait kondisi dan kelayakan rumah tinggal.</small>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Kategori Rumah</label>
+                        <select>
+                            <option value="">Pilih kategori…</option>
+                            <option>Rumah permanen</option>
+                            <option>Rumah semi permanen</option>
+                            <option>Rumah non permanen</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kondisi Struktur Bangunan</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Baik</option>
+                            <option>Kurang layak</option>
+                            <option>Tidak layak</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Luas Bangunan (m²)</label>
+                        <input type="number" min="0" placeholder="contoh: 36">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status Kepemilikan Tanah</label>
+                        <select>
+                            <option value="">Pilih status…</option>
+                            <option>Milik sendiri (bersertifikat)</option>
+                            <option>Milik sendiri (belum bersertifikat)</option>
+                            <option>Sewa / kontrak</option>
+                            <option>Menumpang</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jumlah Penghuni</label>
+                        <input type="number" min="1" placeholder="contoh: 4">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status Validasi Lapangan</label>
+                        <select>
+                            <option value="">Pilih status…</option>
+                            <option>Belum diverifikasi</option>
+                            <option>Sudah diverifikasi (layak)</option>
+                            <option>Sudah diverifikasi (tidak layak)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan Verifikator</label>
+                    <textarea placeholder="Isi ringkasan temuan dan rekomendasi verifikator…"></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <div class="form-footer-left">
+                        <span class="chip-info">Form ini hanya dummy, belum terhubung ke backend.</span>
+                    </div>
+                    <div class="form-footer-right">
+                        <button type="button" class="btn btn-ghost">Simpan draft lokal</button>
+                        <button type="button" class="btn btn-primary">Submit validasi</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SANITASI -->
+            <section id="tab-sanitasi" class="tab-content">
+                <div class="section-header">
+                    <h2>Sanitasi – Validasi Sarana Sanitasi Dasar</h2>
+                    <small>Dummy form terkait jamban, septik tank, dan saluran pembuangan.</small>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ketersediaan Jamban Layak</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Ada & layak</option>
+                            <option>Ada tetapi tidak layak</option>
+                            <option>Tidak ada (BAB sembarangan)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jenis Septik Tank</label>
+                        <select>
+                            <option value="">Pilih jenis…</option>
+                            <option>Septik tank individu</option>
+                            <option>Septik tank komunal</option>
+                            <option>Tidak menggunakan septik tank</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Saluran Pembuangan Air Limbah (SPAL)</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Ada & tertutup</option>
+                            <option>Ada namun terbuka</option>
+                            <option>Tidak ada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jarak Septik Tank ke Sumber Air Minum (m)</label>
+                        <input type="number" min="0" placeholder="contoh: 12">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Praktik Pengelolaan Tinja</label>
+                        <select>
+                            <option value="">Pilih praktik…</option>
+                            <option>Disedot berkala</option>
+                            <option>Tidak pernah disedot</option>
+                            <option>Tidak diketahui</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status Validasi Sanitasi</label>
+                        <select>
+                            <option value="">Pilih status…</option>
+                            <option>Belum diverifikasi</option>
+                            <option>Memenuhi standar</option>
+                            <option>Tidak memenuhi standar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan Verifikasi Sanitasi</label>
+                    <textarea placeholder="Catatan terkait kondisi sanitasi dan rekomendasi perbaikan…"></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <div class="form-footer-left">
+                        <span class="chip-info">Bisa dikembangkan menjadi modul sanitasi terintegrasi.</span>
+                    </div>
+                    <div class="form-footer-right">
+                        <button type="button" class="btn btn-ghost">Simpan draft lokal</button>
+                        <button type="button" class="btn btn-primary">Submit validasi</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RTLH -->
+            <section id="tab-rtlh" class="tab-content">
+                <div class="section-header">
+                    <h2>RTLH – Validasi Rumah Tidak Layak Huni</h2>
+                    <small>Dummy form identifikasi kelayakan fisik rumah (RTLH).</small>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Kondisi Atap</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Baik (tidak bocor)</option>
+                            <option>Kurang baik (bocor sebagian)</option>
+                            <option>Rusak berat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kondisi Dinding</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Baik</option>
+                            <option>Setengah permanen</option>
+                            <option>Tidak layak (bambu, anyaman, dll.)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kondisi Lantai</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Keramik / plester</option>
+                            <option>Semen kasar</option>
+                            <option>Tanah</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ventilasi & Pencahayaan</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Cukup</option>
+                            <option>Kurang</option>
+                            <option>Tidak layak</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori RTLH (hasil asesmen)</label>
+                        <select>
+                            <option value="">Pilih kategori…</option>
+                            <option>Bukan RTLH</option>
+                            <option>RTLH ringan</option>
+                            <option>RTLH sedang</option>
+                            <option>RTLH berat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Prioritas Penanganan</label>
+                        <select>
+                            <option value="">Pilih prioritas…</option>
+                            <option>Prioritas tinggi</option>
+                            <option>Prioritas sedang</option>
+                            <option>Prioritas rendah</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ringkasan Verifikasi RTLH</label>
+                    <textarea placeholder="Ringkasan penilaian RTLH untuk kebutuhan bantuan program…"></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <div class="form-footer-left">
+                        <span class="chip-info">Bisa dihubungkan dengan program bantuan RTLH / BSPS.</span>
+                    </div>
+                    <div class="form-footer-right">
+                        <button type="button" class="btn btn-ghost">Simpan draft lokal</button>
+                        <button type="button" class="btn btn-primary">Submit validasi</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AIR -->
+            <section id="tab-air" class="tab-content">
+                <div class="section-header">
+                    <h2>Air – Validasi Akses Air Minum & Air Bersih</h2>
+                    <small>Dummy form terkait sumber air, kualitas, dan kontinuitas.</small>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Sumber Air Utama</label>
+                        <select>
+                            <option value="">Pilih sumber…</option>
+                            <option>PAM / PDAM</option>
+                            <option>Sumur gali</option>
+                            <option>Sumur bor</option>
+                            <option>Mata air</option>
+                            <option>Air permukaan (sungai, danau, dll.)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kualitas Air (hasil observasi)</label>
+                        <select>
+                            <option value="">Pilih kondisi…</option>
+                            <option>Jernih, tidak berbau</option>
+                            <option>Keruh / berwarna</option>
+                            <option>Berbau / berasa</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kontinuitas Ketersediaan Air</label>
+                        <select>
+                            <option value="">Pilih kontinuitas…</option>
+                            <option>24 jam</option>
+                            <option>Hanya jam tertentu</option>
+                            <option>Sering tidak mengalir</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jarak Sumber Air ke Rumah (m)</label>
+                        <input type="number" min="0" placeholder="contoh: 30">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pengolahan Air Sebelum Digunakan</label>
+                        <select>
+                            <option value="">Pilih opsi…</option>
+                            <option>Direbus</option>
+                            <option>Disaring / difiltrasi</option>
+                            <option>Menggunakan air kemasan</option>
+                            <option>Tanpa pengolahan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status Kelayakan Akses Air</label>
+                        <select>
+                            <option value="">Pilih status…</option>
+                            <option>Layak</option>
+                            <option>Kurang layak</option>
+                            <option>Tidak layak</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan Verifikasi Akses Air</label>
+                    <textarea placeholder="Catatan verifikasi akses air minum dan air bersih…"></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <div class="form-footer-left">
+                        <span class="chip-info">Contoh saja, skema field dapat disesuaikan regulasi teknis.</span>
+                    </div>
+                    <div class="form-footer-right">
+                        <button type="button" class="btn btn-ghost">Simpan draft lokal</button>
+                        <button type="button" class="btn btn-primary">Submit validasi</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    // --- TAB HANDLER ---
+    document.querySelectorAll('.tab-button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var targetId = this.getAttribute('data-tab');
+
+            document.querySelectorAll('.tab-button').forEach(function (b) {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // --- SEARCH MOCKUP HANDLER ---
+    const searchForm = document.getElementById('searchForm');
+    const searchBy = document.getElementById('searchBy');
+    const searchKeyword = document.getElementById('searchKeyword');
+    const resetSearch = document.getElementById('resetSearch');
+
+    const resultEmpty = document.getElementById('searchResultEmpty');
+    const resultData = document.getElementById('searchResultData');
+    const resultName = document.getElementById('resultName');
+    const resultMeta = document.getElementById('resultMeta');
+    const badgeStatus = document.getElementById('badgeStatus');
+
+    searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const by = searchBy.value;
+        const keyword = searchKeyword.value.trim();
+        if (!keyword) return;
+
+        // Dummy pengisian hasil pencarian di header
+        resultName.textContent = 'Subjek: ' + keyword;
+        resultMeta.textContent = 'Kriteria: ' + by + ' • RT 001 / RW 002 • Dusun Contoh';
+        badgeStatus.textContent = 'On-review';
+
+        resultEmpty.style.display = 'none';
+        resultData.style.display = 'flex';
+    });
+
+    resetSearch.addEventListener('click', function () {
+        searchKeyword.value = '';
+        searchBy.value = 'Nama';
+        resultEmpty.style.display = 'flex';
+        resultData.style.display = 'none';
+    });
+</script>
+</body>
+</html>
