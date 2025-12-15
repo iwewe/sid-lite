@@ -536,6 +536,28 @@
       font-style: italic;
     }
 
+    details{
+      padding: 12px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      transition: all 0.2s ease;
+    }
+
+    details[open]{
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    details summary{
+      outline: none;
+      transition: color 0.2s ease;
+    }
+
+    details summary:hover{
+      color: var(--accent-dark);
+    }
+
     /* RESPONSIVE DESIGN */
     @media (max-width: 1024px){
       .gov-header{
@@ -685,29 +707,37 @@
 
       <!-- EXPANDED SEARCH AREA -->
       <div class="searchArea" id="searchArea">
-        <div class="row">
-          <div class="col" style="min-width:220px">
-            <label>Pencarian (NIK / Nama)</label>
-            <input id="qText" type="text" placeholder="Contoh: 3173... atau 'Siti'" />
+        <div style="margin-bottom: 16px;">
+          <label>Cari Warga (NIK atau Nama)</label>
+          <div style="display: flex; gap: 12px; align-items: end; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px;">
+              <input id="qText" type="text" placeholder="Ketik NIK atau nama warga... (contoh: 3173... atau Siti)" />
+            </div>
+            <button id="btnSearch" style="min-width: 140px;">🔍 Cari</button>
           </div>
-          <div class="col">
-            <label>Dusun</label>
-            <input id="qDusun" type="text" placeholder="Contoh: Dusun I" />
-          </div>
-          <div class="col">
-            <label>RW</label>
-            <input id="qRw" type="text" placeholder="Contoh: 02" />
-          </div>
-          <div class="col">
-            <label>RT</label>
-            <input id="qRt" type="text" placeholder="Contoh: 01" />
-          </div>
-          <div class="col" style="min-width:160px">
-            <label>&nbsp;</label>
-            <button id="btnSearch">🔍 Cari Warga</button>
-            <div class="mini">Dummy data (silakan ganti dari API).</div>
-          </div>
+          <div class="mini">Pencarian otomatis mencari berdasarkan NIK dan nama secara bersamaan</div>
         </div>
+
+        <!-- Filter Wilayah (Optional) -->
+        <details style="margin-bottom: 12px;">
+          <summary style="cursor: pointer; padding: 8px 0; font-weight: 600; color: var(--accent); user-select: none;">
+            📍 Filter Wilayah (Opsional)
+          </summary>
+          <div class="row" style="margin-top: 12px;">
+            <div class="col">
+              <label>Dusun</label>
+              <input id="qDusun" type="text" placeholder="Contoh: Dusun I" />
+            </div>
+            <div class="col">
+              <label>RW</label>
+              <input id="qRw" type="text" placeholder="Contoh: 02" />
+            </div>
+            <div class="col">
+              <label>RT</label>
+              <input id="qRt" type="text" placeholder="Contoh: 01" />
+            </div>
+          </div>
+        </details>
 
         <div class="results" id="resultsBox">
           <div class="results-top">
@@ -732,15 +762,7 @@
       <div class="section-title">
         <div>
           <h2>SID Lite – Verifikasi Sarana Prasarana Rumah Tinggal</h2>
-          <p>Isi data pada tab. Status verifikasi dihitung dari jumlah pertanyaan wajib yang sudah dipilih.</p>
-        </div>
-        <div style="min-width:240px">
-          <label>Pilih Modul (Dropdown – alternatif tab)</label>
-          <select id="tabSelect">
-            <option value="jamban">Jamban Septic</option>
-            <option value="rtlh">RTLH</option>
-            <option value="pah">PAH (Air Minum)</option>
-          </select>
+          <p>Pilih tab di bawah untuk mengisi data verifikasi. Status verifikasi dihitung dari jumlah pertanyaan wajib yang sudah dipilih.</p>
         </div>
       </div>
 
@@ -816,8 +838,9 @@
         </div>
 
         <div class="footer-actions">
-          <button class="secondary" data-reset="jamban">🔄 Reset Tab</button>
-          <button data-save="jamban">💾 Simpan Draft</button>
+          <button class="secondary" data-reset="jamban">🔄 Reset</button>
+          <button class="secondary" data-save="jamban">💾 Simpan Draft</button>
+          <button data-submit="jamban" style="background: var(--ok); border-color: var(--ok);">✓ Simpan ke Database</button>
         </div>
       </div>
 
@@ -894,8 +917,9 @@
         </div>
 
         <div class="footer-actions">
-          <button class="secondary" data-reset="rtlh">🔄 Reset Tab</button>
-          <button data-save="rtlh">💾 Simpan Draft</button>
+          <button class="secondary" data-reset="rtlh">🔄 Reset</button>
+          <button class="secondary" data-save="rtlh">💾 Simpan Draft</button>
+          <button data-submit="rtlh" style="background: var(--ok); border-color: var(--ok);">✓ Simpan ke Database</button>
         </div>
       </div>
 
@@ -945,8 +969,9 @@
         </div>
 
         <div class="footer-actions">
-          <button class="secondary" data-reset="pah">🔄 Reset Tab</button>
-          <button data-save="pah">💾 Simpan Draft</button>
+          <button class="secondary" data-reset="pah">🔄 Reset</button>
+          <button class="secondary" data-save="pah">💾 Simpan Draft</button>
+          <button data-submit="pah" style="background: var(--ok); border-color: var(--ok);">✓ Simpan ke Database</button>
         </div>
       </div>
 
@@ -990,10 +1015,8 @@
         t.setAttribute("aria-selected", active ? "true" : "false");
       });
       Object.entries(panels).forEach(([k, el]) => el.classList.toggle("active", k === key));
-      $("tabSelect").value = key;
     }
     tabs.forEach(t => t.addEventListener("click", () => setActiveTab(t.dataset.tab)));
-    $("tabSelect").addEventListener("change", (e) => setActiveTab(e.target.value));
 
     // Scoring
     const rules = {
@@ -1100,6 +1123,11 @@
 
     $("btnSearch").addEventListener("click", searchWarga);
 
+    // Enter key support untuk search
+    $("qText").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") searchWarga();
+    });
+
     $("btnClear").addEventListener("click", () => {
       $("qText").value = "";
       $("qDusun").value = "";
@@ -1178,6 +1206,57 @@
 
     document.querySelectorAll("button[data-reset]").forEach(b => {
       b.addEventListener("click", () => resetModule(b.dataset.reset));
+    });
+
+    // Submit to database
+    async function submitToDatabase(module){
+      if (!selectedWarga){
+        alert("❌ Pilih warga terlebih dahulu menggunakan pencarian.");
+        return;
+      }
+
+      const score = computeScore(module);
+      const { minVerified } = rules[module];
+
+      if (score < minVerified){
+        const confirm = window.confirm(
+          `⚠️ Peringatan:\n\n` +
+          `Modul "${module.toUpperCase()}" belum terverifikasi lengkap.\n` +
+          `Nilai saat ini: ${score}/${minVerified}\n\n` +
+          `Apakah Anda yakin ingin menyimpan data yang belum lengkap ke database?`
+        );
+        if (!confirm) return;
+      }
+
+      const payload = collectModuleData(module);
+
+      // TODO: Ganti dengan API call yang sebenarnya
+      console.log("📤 Mengirim data ke database:", payload);
+
+      // Simulasi API call
+      try {
+        // await fetch('/api/save', { method: 'POST', body: JSON.stringify(payload) });
+
+        // Simulasi success
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        alert(
+          `✅ Berhasil!\n\n` +
+          `Data modul "${module.toUpperCase()}" untuk warga:\n` +
+          `${selectedWarga.nama} (NIK: ${selectedWarga.nik})\n\n` +
+          `telah berhasil disimpan ke database.`
+        );
+
+        // Auto save to localStorage as backup
+        localStorage.setItem(storageKey(module), JSON.stringify(payload));
+
+      } catch (error) {
+        alert(`❌ Gagal menyimpan data:\n${error.message}`);
+      }
+    }
+
+    document.querySelectorAll("button[data-submit]").forEach(b => {
+      b.addEventListener("click", () => submitToDatabase(b.dataset.submit));
     });
 
     let autosaveTimer = null;
