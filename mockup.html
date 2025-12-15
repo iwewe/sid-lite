@@ -701,7 +701,6 @@
         </div>
         <div class="compactRight">
           <button id="btnChangeWarga" class="secondary" style="min-width:160px">🔄 Ganti Warga</button>
-          <button id="btnExportCompact" class="secondary" style="min-width:160px">📥 Export JSON</button>
         </div>
       </div>
 
@@ -749,7 +748,6 @@
             </div>
             <div class="results-actions">
               <button id="btnClear" class="secondary" style="min-width:160px">🔄 Reset Filter</button>
-              <button id="btnExport" class="secondary" style="min-width:160px">📥 Export JSON</button>
             </div>
           </div>
           <div class="reslist" id="resList"></div>
@@ -1269,25 +1267,6 @@
         });
       }, 250);
     }
-
-    async function exportJson(){
-      const exportObj = {
-        warga: selectedWarga,
-        jamban: collectModuleData("jamban"),
-        rtlh: collectModuleData("rtlh"),
-        pah: collectModuleData("pah"),
-        exportedAt: new Date().toISOString(),
-      };
-      const text = JSON.stringify(exportObj, null, 2);
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("JSON berhasil disalin ke clipboard.");
-      }catch(e){
-        prompt("Copy JSON berikut:", text);
-      }
-    }
-    $("btnExport").addEventListener("click", exportJson);
-    $("btnExportCompact").addEventListener("click", exportJson);
 
     // Init
     computeAll();
